@@ -1,57 +1,41 @@
-# Imagen Fork - DameMano
+# gemini-imagen
 
-Fork du plugin [sanjay3290/ai-skills/imagen](https://github.com/sanjay3290/ai-skills) pour le projet DameMano.
+Simple Python script for image generation using Google Gemini API.
 
-## Modifications par rapport à l'original
+Based on [sanjay3290/ai-skills/imagen](https://github.com/sanjay3290/ai-skills).
 
-- **Force l'extension `.jpg`** - L'API Gemini retourne toujours du JPEG, le script corrige automatiquement l'extension
-- Simplification pour macOS/Linux uniquement
-- Instructions custom pour DameMano (voir SKILL.md)
+## Features
+
+- Zero dependencies (Python standard library only)
+- Forces `.jpg` output (Gemini API always returns JPEG)
+- Auto-converts any extension to `.jpg`
 
 ## Usage
 
 ```bash
-python3 tools/imagen-fork/scripts/generate_image.py "prompt" "output.jpg"
+python3 scripts/generate_image.py "prompt" "output.jpg"
 ```
-
-Si vous passez `.png`, le script le convertira automatiquement en `.jpg`.
 
 ## Configuration
 
 ```bash
 export GEMINI_API_KEY="your-key"
-
-# Persister dans ~/.zshrc
-echo 'export GEMINI_API_KEY="your-key"' >> ~/.zshrc
 ```
 
-Obtenir une clé gratuite: https://aistudio.google.com/
+Get a free key: https://aistudio.google.com/
 
-## Tailles d'image
+## Image Sizes
 
-| Size | Resolution | Usage |
-|------|------------|-------|
-| `512` | 512x512 | Icônes, thumbnails |
-| `1K` | 1024x1024 | Usage général (défaut) |
-| `2K` | 2048x2048 | Haute résolution |
+| Size | Resolution |
+|------|------------|
+| `512` | 512x512 |
+| `1K` | 1024x1024 (default) |
+| `2K` | 2048x2048 |
 
 ```bash
-# Avec taille spécifique
 python3 scripts/generate_image.py --size 2K "prompt" "output.jpg"
-
-# Variables d'environnement
-export IMAGE_SIZE="2K"  # Taille par défaut
-export GEMINI_MODEL="gemini-3-pro-image-preview"  # Modèle
 ```
 
-## Troubleshooting
+## License
 
-| Erreur | Cause | Solution |
-|--------|-------|----------|
-| 400 | Prompt invalide | Vérifier les caractères spéciaux |
-| 403 | Clé API invalide | Vérifier GEMINI_API_KEY |
-| 429 | Rate limit | Attendre et réessayer |
-
-## Licence
-
-Apache-2.0 (héritée du projet original)
+Apache-2.0

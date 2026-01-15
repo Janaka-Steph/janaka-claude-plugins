@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Imagen Fork - Google Gemini Image Generation Script
+gemini-imagen - Google Gemini Image Generation Script
 
-Forked from sanjay3290/ai-skills for DameMano project.
-Forces JPEG output (Gemini API always returns JPEG).
+Based on sanjay3290/ai-skills.
+Detects actual image format via magic bytes and sets correct extension.
 
 Usage:
     python generate_image.py "prompt" [output_path]
@@ -29,6 +29,28 @@ DEFAULT_MODEL_ID = "gemini-3-pro-image-preview"
 API_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models"
 DEFAULT_IMAGE_SIZE = "1K"
 VALID_SIZES = {"512", "1K", "2K"}
+
+# Magic bytes for image format detection
+MAGIC_BYTES = {
+    b'\xff\xd8\xff': '.jpg',      # JPEG
+    b'\x89PNG\r\n\x1a\n': '.png', # PNG
+    b'GIF87a': '.gif',            # GIF87a
+    b'GIF89a': '.gif',            # GIF89a
+    b'RIFF': '.webp',             # WebP (starts with RIFF, then WEBP)
+}
+
+
+def detect_image_format(image_bytes: bytes) -> str:
+    """Detect image format from magic bytes. Returns extension (e.g., '.jpg')."""
+    for magic, ext in MAGIC_BYTES.items():
+        if image_bytes.startswith(magic):
+            # Special case for WebP: verify WEBP signature
+            if magic == b'RIFF' and len(image_bytes) >= 12:
+                if image_bytes[8:12] != b'WEBP':
+                    continue
+            return ext
+    # Default to JPEG if unknown (current Gemini behavior)
+    return '.jpg'
 
 
 def get_api_endpoint(model_id: str) -> str:
@@ -56,12 +78,16 @@ def validate_image_size(size: str) -> str:
     return size
 
 
-def force_jpg_extension(output_path: Path) -> Path:
-    """Force .jpg extension since Gemini always returns JPEG."""
-    if output_path.suffix.lower() not in ('.jpg', '.jpeg'):
-        new_path = output_path.with_suffix('.jpg')
+def fix_extension(output_path: Path, detected_ext: str) -> Path:
+    """Fix extension to match detected image format."""
+    current_ext = output_path.suffix.lower()
+    # Normalize .jpeg to .jpg for comparison
+    if current_ext == '.jpeg':
+        current_ext = '.jpg'
+    if current_ext != detected_ext:
+        new_path = output_path.with_suffix(detected_ext)
         if output_path.suffix:
-            print(f"Note: Forcing .jpg extension (Gemini returns JPEG)", file=sys.stderr)
+            print(f"Note: Changed extension to {detected_ext} (detected from image data)", file=sys.stderr)
         return new_path
     return output_path
 
@@ -148,11 +174,14 @@ def extract_image_data(response: dict) -> str:
         sys.exit(1)
 
 
-def save_image(image_data: str, output_path: Path) -> None:
-    """Decode and save the base64 image data."""
+def save_image(image_data: str, output_path: Path) -> Path:
+    """Decode, detect format, fix extension, and save the image. Returns final path."""
     try:
         image_bytes = base64.b64decode(image_data)
-        output_path.write_bytes(image_bytes)
+        detected_ext = detect_image_format(image_bytes)
+        final_path = fix_extension(output_path, detected_ext)
+        final_path.write_bytes(image_bytes)
+        return final_path
     except Exception as e:
         print(f"Error: Failed to save image: {e}", file=sys.stderr)
         sys.exit(1)
@@ -202,9 +231,7 @@ Environment Variables:
     model_id = args.model or os.environ.get("GEMINI_MODEL", DEFAULT_MODEL_ID)
     image_size = args.size or os.environ.get("IMAGE_SIZE", DEFAULT_IMAGE_SIZE)
     image_size = validate_image_size(image_size)
-
-    # Force .jpg extension
-    output_path = force_jpg_extension(Path(args.output))
+    output_path = Path(args.output)
 
     # Create output directory
     create_output_dir(output_path)
@@ -226,16 +253,17 @@ Environment Variables:
         print("Error: No image data received from API", file=sys.stderr)
         sys.exit(1)
 
-    save_image(image_data, output_path)
+    # Save image (detects format and fixes extension if needed)
+    final_path = save_image(image_data, output_path)
 
     # Verify and report success
-    if output_path.exists() and output_path.stat().st_size > 0:
-        file_size = get_file_size(output_path)
+    if final_path.exists() and final_path.stat().st_size > 0:
+        file_size = get_file_size(final_path)
         print("Success! Image generated and saved.")
-        print(f"File: {output_path}")
+        print(f"File: {final_path}")
         print(f"Size: {file_size}")
     else:
-        print(f"Error: Failed to save image to {output_path}", file=sys.stderr)
+        print(f"Error: Failed to save image to {final_path}", file=sys.stderr)
         sys.exit(1)
 
 

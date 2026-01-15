@@ -1,5 +1,5 @@
 ---
-name: imagen
+name: gemini-imagen
 description: |
   Generate images using Google Gemini's image generation capabilities.
   Use this skill when the user needs to create, generate, or produce images
@@ -7,7 +7,7 @@ description: |
   concept art, placeholder images, or visual representations.
 ---
 
-# Imagen Fork - AI Image Generation Skill
+# gemini-imagen
 
 ## Overview
 

@@ -1,4 +1,4 @@
-# Imagen Skill Reference
+# gemini-imagen Reference
 
 ## Setup
 
@@ -59,7 +59,7 @@ python scripts/generate_image.py <prompt> [output_path] [--size SIZE]
 | Parameter | Required | Default | Description |
 |-----------|----------|---------|-------------|
 | `prompt` | Yes | - | Text description of desired image |
-| `output_path` | No | `./generated-image.png` | Where to save the image |
+| `output_path` | No | `./generated-image.jpg` | Where to save the image |
 | `--size` | No | `1K` | Image size (512, 1K, or 2K) |
 
 ### Environment Variables
@@ -80,19 +80,19 @@ python scripts/generate_image.py "A serene mountain landscape at dawn"
 ### Custom Output Path
 
 ```bash
-python scripts/generate_image.py "Minimalist logo design" "./assets/logo.png"
+python scripts/generate_image.py "Minimalist logo design" "./assets/logo.jpg"
 ```
 
 ### High Resolution
 
 ```bash
-python scripts/generate_image.py --size 2K "Detailed portrait" "./high-res.png"
+python scripts/generate_image.py --size 2K "Detailed portrait" "./high-res.jpg"
 ```
 
 ### Small/Fast Generation
 
 ```bash
-python scripts/generate_image.py --size 512 "Simple icon" "./icon.png"
+python scripts/generate_image.py --size 512 "Simple icon" "./icon.jpg"
 ```
 
 ## Prompt Tips

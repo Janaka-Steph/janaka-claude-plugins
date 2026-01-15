@@ -1,4 +1,4 @@
-# Imagen Skill - Usage Examples
+# gemini-imagen - Usage Examples
 
 ## Frontend Development Scenarios
 
@@ -7,7 +7,7 @@
 User: "I need a hero image for my fintech startup landing page"
 
 Claude will run:
-python scripts/generate_image.py "Modern fintech hero image with abstract flowing gradients in blue and purple, suggesting financial growth and technology, clean minimalist style" "./src/assets/hero.png"
+python scripts/generate_image.py "Modern fintech hero image with abstract flowing gradients in blue and purple, suggesting financial growth and technology, clean minimalist style" "./src/assets/hero.jpg"
 ```
 
 ### App Icons
@@ -15,7 +15,7 @@ python scripts/generate_image.py "Modern fintech hero image with abstract flowin
 User: "Generate an app icon for my weather app"
 
 Claude will run:
-python scripts/generate_image.py --size 512 "Minimalist weather app icon, stylized sun partially behind a cloud, warm orange and blue gradient, rounded square suitable for iOS/Android" "./assets/icons/weather-icon.png"
+python scripts/generate_image.py --size 512 "Minimalist weather app icon, stylized sun partially behind a cloud, warm orange and blue gradient, rounded square suitable for iOS/Android" "./assets/icons/weather-icon.jpg"
 ```
 
 ### Placeholder Images
@@ -23,7 +23,7 @@ python scripts/generate_image.py --size 512 "Minimalist weather app icon, styliz
 User: "I need placeholder images for my e-commerce product grid"
 
 Claude will run:
-python scripts/generate_image.py "E-commerce product placeholder image, neutral gray background, subtle product box outline, professional and clean" "./public/images/placeholder-product.png"
+python scripts/generate_image.py "E-commerce product placeholder image, neutral gray background, subtle product box outline, professional and clean" "./public/images/placeholder-product.jpg"
 ```
 
 ### Background Patterns
@@ -31,7 +31,7 @@ python scripts/generate_image.py "E-commerce product placeholder image, neutral 
 User: "Create a subtle background pattern for my website"
 
 Claude will run:
-python scripts/generate_image.py --size 2K "Seamless tileable subtle geometric pattern, very light gray on white, minimalist, suitable for website background" "./assets/bg-pattern.png"
+python scripts/generate_image.py --size 2K "Seamless tileable subtle geometric pattern, very light gray on white, minimalist, suitable for website background" "./assets/bg-pattern.jpg"
 ```
 
 ## Documentation & Diagrams
@@ -41,7 +41,7 @@ python scripts/generate_image.py --size 2K "Seamless tileable subtle geometric p
 User: "Visualize our microservices architecture"
 
 Claude will run:
-python scripts/generate_image.py "Clean technical diagram showing microservices architecture, boxes connected by arrows, services labeled API Gateway, Auth Service, User Service, Order Service, white background, professional style" "./docs/images/architecture.png"
+python scripts/generate_image.py "Clean technical diagram showing microservices architecture, boxes connected by arrows, services labeled API Gateway, Auth Service, User Service, Order Service, white background, professional style" "./docs/images/architecture.jpg"
 ```
 
 ### Process Flowchart
@@ -49,7 +49,7 @@ python scripts/generate_image.py "Clean technical diagram showing microservices 
 User: "Create a flowchart for user onboarding"
 
 Claude will run:
-python scripts/generate_image.py "Flowchart diagram showing user onboarding process, start with signup, branches for email verification, profile setup, tutorial completion, clean business style with blue accents" "./docs/onboarding-flow.png"
+python scripts/generate_image.py "Flowchart diagram showing user onboarding process, start with signup, branches for email verification, profile setup, tutorial completion, clean business style with blue accents" "./docs/onboarding-flow.jpg"
 ```
 
 ## Marketing & Creative
@@ -59,7 +59,7 @@ python scripts/generate_image.py "Flowchart diagram showing user onboarding proc
 User: "I need a banner for our product launch on Twitter"
 
 Claude will run:
-python scripts/generate_image.py "Modern product launch banner 1200x675, bold typography space for text overlay, dynamic abstract tech background, vibrant gradients purple to blue" "./marketing/twitter-banner.png"
+python scripts/generate_image.py "Modern product launch banner 1200x675, bold typography space for text overlay, dynamic abstract tech background, vibrant gradients purple to blue" "./marketing/twitter-banner.jpg"
 ```
 
 ### Blog Post Headers
@@ -67,7 +67,7 @@ python scripts/generate_image.py "Modern product launch banner 1200x675, bold ty
 User: "Generate a header image for my blog post about AI"
 
 Claude will run:
-python scripts/generate_image.py "Blog header image about artificial intelligence, abstract neural network visualization, glowing nodes and connections, dark background with blue accent lights, futuristic and professional" "./blog/images/ai-header.png"
+python scripts/generate_image.py "Blog header image about artificial intelligence, abstract neural network visualization, glowing nodes and connections, dark background with blue accent lights, futuristic and professional" "./blog/images/ai-header.jpg"
 ```
 
 ## Professional Photography (Advanced Techniques)
@@ -77,7 +77,7 @@ python scripts/generate_image.py "Blog header image about artificial intelligenc
 User: "Generate a professional corporate headshot for our team page"
 
 Claude will run:
-python scripts/generate_image.py "Professional corporate headshot, 85mm f/2.8 lens, three-point studio lighting with soft key light from left, subtle fill light, rim light for hair separation, navy blue business suit, neutral gray backdrop, visible catchlights in eyes, chest-up framing, natural skin texture with subtle pores, sharp focus on eyes" "./team/headshot-template.png"
+python scripts/generate_image.py "Professional corporate headshot, 85mm f/2.8 lens, three-point studio lighting with soft key light from left, subtle fill light, rim light for hair separation, navy blue business suit, neutral gray backdrop, visible catchlights in eyes, chest-up framing, natural skin texture with subtle pores, sharp focus on eyes" "./team/headshot-template.jpg"
 ```
 
 ### Casual Lifestyle Portraits
@@ -85,7 +85,7 @@ python scripts/generate_image.py "Professional corporate headshot, 85mm f/2.8 le
 User: "Create a casual, authentic-looking portrait for my personal brand"
 
 Claude will run:
-python scripts/generate_image.py "Casual lifestyle portrait, Kodak Portra 400 color tones, natural window light with soft shadows, 3/4 body shot, authentic film grain, early-2000s digital camera aesthetic, relaxed pose, natural skin texture, warm highlights, slight background blur" "./branding/casual-portrait.png"
+python scripts/generate_image.py "Casual lifestyle portrait, Kodak Portra 400 color tones, natural window light with soft shadows, 3/4 body shot, authentic film grain, early-2000s digital camera aesthetic, relaxed pose, natural skin texture, warm highlights, slight background blur" "./branding/casual-portrait.jpg"
 ```
 
 ### High-Fashion Editorial
@@ -93,7 +93,7 @@ python scripts/generate_image.py "Casual lifestyle portrait, Kodak Portra 400 co
 User: "Generate a high-fashion editorial style photo"
 
 Claude will run:
-python scripts/generate_image.py "High-fashion editorial portrait, dramatic studio lighting with strong key light, deep shadows, 85mm f/1.4 lens with shallow depth of field, model wearing designer clothing, fabric texture visible, silk sheen and drape, backstage atmosphere, bold composition, magazine-quality, keep facial features exactly consistent" "./fashion/editorial-shot.png"
+python scripts/generate_image.py "High-fashion editorial portrait, dramatic studio lighting with strong key light, deep shadows, 85mm f/1.4 lens with shallow depth of field, model wearing designer clothing, fabric texture visible, silk sheen and drape, backstage atmosphere, bold composition, magazine-quality, keep facial features exactly consistent" "./fashion/editorial-shot.jpg"
 ```
 
 ### Product Photography with Model
@@ -101,7 +101,7 @@ python scripts/generate_image.py "High-fashion editorial portrait, dramatic stud
 User: "Create a lifestyle product shot showing someone using headphones"
 
 Claude will run:
-python scripts/generate_image.py "Lifestyle product photography, person wearing premium over-ear headphones, 50mm prime lens, natural soft lighting from large window, clean modern interior background with bokeh, 3/4 profile view, natural skin texture, subtle catchlights, product details sharp and visible, authentic lifestyle feel, Fujifilm Pro 400H color tones" "./products/headphones-lifestyle.png"
+python scripts/generate_image.py "Lifestyle product photography, person wearing premium over-ear headphones, 50mm prime lens, natural soft lighting from large window, clean modern interior background with bokeh, 3/4 profile view, natural skin texture, subtle catchlights, product details sharp and visible, authentic lifestyle feel, Fujifilm Pro 400H color tones" "./products/headphones-lifestyle.jpg"
 ```
 
 ### Social Media Selfie Style
@@ -109,7 +109,7 @@ python scripts/generate_image.py "Lifestyle product photography, person wearing 
 User: "Generate an authentic-looking selfie for social media content"
 
 Claude will run:
-python scripts/generate_image.py "Authentic social media selfie, iPhone camera quality with realistic sensor noise, bathroom mirror selfie angle, natural indoor lighting, slight lens distortion, casual outfit, natural skin with subtle imperfections, relaxed authentic expression, 1990s disposable camera aesthetic, do not alter the face, early morning soft light" "./content/selfie-style.png"
+python scripts/generate_image.py "Authentic social media selfie, iPhone camera quality with realistic sensor noise, bathroom mirror selfie angle, natural indoor lighting, slight lens distortion, casual outfit, natural skin with subtle imperfections, relaxed authentic expression, 1990s disposable camera aesthetic, do not alter the face, early morning soft light" "./content/selfie-style.jpg"
 ```
 
 ### E-commerce Fashion
@@ -117,7 +117,7 @@ python scripts/generate_image.py "Authentic social media selfie, iPhone camera q
 User: "Create a product photo for an e-commerce clothing listing"
 
 Claude will run:
-python scripts/generate_image.py "E-commerce fashion photography, model wearing casual cotton t-shirt, clean white studio background, soft even lighting, full body shot, fabric texture clearly visible, natural pose, 70mm lens, product colors accurate, subtle shadows for depth, professional catalog style, natural skin texture" "./ecommerce/tshirt-listing.png"
+python scripts/generate_image.py "E-commerce fashion photography, model wearing casual cotton t-shirt, clean white studio background, soft even lighting, full body shot, fabric texture clearly visible, natural pose, 70mm lens, product colors accurate, subtle shadows for depth, professional catalog style, natural skin texture" "./ecommerce/tshirt-listing.jpg"
 ```
 
 ## Command Line Usage
@@ -127,13 +127,13 @@ python scripts/generate_image.py "E-commerce fashion photography, model wearing 
 python scripts/generate_image.py "A peaceful zen garden"
 
 # Specify output location
-python scripts/generate_image.py "Mountain landscape" "./wallpapers/mountains.png"
+python scripts/generate_image.py "Mountain landscape" "./wallpapers/mountains.jpg"
 
 # High resolution output
-python scripts/generate_image.py --size 2K "Detailed cityscape" "./high-res/city.png"
+python scripts/generate_image.py --size 2K "Detailed cityscape" "./high-res/city.jpg"
 
 # Quick thumbnail/icon
-python scripts/generate_image.py --size 512 "Simple checkmark icon" "./icons/check.png"
+python scripts/generate_image.py --size 512 "Simple checkmark icon" "./icons/check.jpg"
 ```
 
 ### Windows PowerShell
@@ -144,7 +144,7 @@ python scripts/generate_image.py "A peaceful zen garden"
 
 # With environment variable for size
 $env:IMAGE_SIZE = "2K"
-python scripts/generate_image.py "Detailed cityscape" "./high-res/city.png"
+python scripts/generate_image.py "Detailed cityscape" "./high-res/city.jpg"
 ```
 
 ### Batch Generation (via shell)
@@ -153,7 +153,7 @@ python scripts/generate_image.py "Detailed cityscape" "./high-res/city.png"
 ```bash
 # Generate multiple variations
 for i in 1 2 3; do
-    python scripts/generate_image.py "Abstract art variation $i" "./art/abstract-$i.png"
+    python scripts/generate_image.py "Abstract art variation $i" "./art/abstract-$i.jpg"
 done
 ```
 
@@ -161,7 +161,7 @@ done
 ```powershell
 # Generate multiple variations
 1..3 | ForEach-Object {
-    python scripts/generate_image.py "Abstract art variation $_" "./art/abstract-$_.png"
+    python scripts/generate_image.py "Abstract art variation $_" "./art/abstract-$_.jpg"
 }
 ```
 
@@ -172,7 +172,7 @@ done
 User: "Add a loading spinner image to my React components"
 
 Claude will:
-1. Generate the image: python scripts/generate_image.py "Minimal loading spinner, circular design, gradient from light to dark blue, clean vector style" "./src/assets/spinner.png"
+1. Generate the image: python scripts/generate_image.py "Minimal loading spinner, circular design, gradient from light to dark blue, clean vector style" "./src/assets/spinner.jpg"
 2. Update component to use the new image
 ```
 
@@ -181,7 +181,7 @@ Claude will:
 User: "Need an empty state illustration for when there's no data"
 
 Claude will:
-1. Generate: python scripts/generate_image.py "Friendly empty state illustration, person looking at empty box, soft pastel colors, friendly and approachable, modern SaaS style" "./src/assets/empty-state.png"
+1. Generate: python scripts/generate_image.py "Friendly empty state illustration, person looking at empty box, soft pastel colors, friendly and approachable, modern SaaS style" "./src/assets/empty-state.jpg"
 2. Add to the component template
 ```
 
@@ -190,7 +190,7 @@ Claude will:
 User: "Generate an onboarding illustration"
 
 Claude will:
-1. Generate: python scripts/generate_image.py --size 2K "Mobile app onboarding illustration, person using smartphone, abstract flowing shapes in background, modern gradient style" "./assets/images/onboarding.png"
+1. Generate: python scripts/generate_image.py --size 2K "Mobile app onboarding illustration, person using smartphone, abstract flowing shapes in background, modern gradient style" "./assets/images/onboarding.jpg"
 2. Add to pubspec.yaml assets
 3. Use in the onboarding widget
 ```
