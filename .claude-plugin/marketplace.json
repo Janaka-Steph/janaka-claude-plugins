@@ -3,14 +3,25 @@
   "owner": {
     "name": "Janaka-Steph"
   },
+  "metadata": {
+    "description": "Generate images using Google Gemini API",
+    "version": "1.0.0"
+  },
   "plugins": [
     {
       "name": "imagen",
-      "source": "..",
-      "description": "Generate images using Google Gemini API",
+      "source": ".",
+      "description": "Generate images using Google Gemini's AI image generation model. Create UI mockups, icons, illustrations, diagrams, and more.",
       "version": "1.0.0",
+      "author": {
+        "name": "Janaka-Steph"
+      },
+      "homepage": "https://github.com/Janaka-Steph/gemini-imagen",
+      "repository": "https://github.com/Janaka-Steph/gemini-imagen",
       "license": "Apache-2.0",
-      "strict": false
+      "keywords": ["image", "gemini", "ai", "generation", "mockup"],
+      "category": "media",
+      "tags": ["image-generation", "ai", "gemini", "creative"]
     }
   ]
 }

@@ -1,0 +1,6 @@
+{
+  "name": "imagen",
+  "version": "1.0.0",
+  "description": "Generate images using Google Gemini API",
+  "skills": ["../SKILL.md"]
+}
