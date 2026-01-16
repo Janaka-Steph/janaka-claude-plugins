@@ -13,7 +13,7 @@ Based on [sanjay3290/ai-skills/imagen](https://github.com/sanjay3290/ai-skills).
 ## Usage
 
 ```bash
-python3 scripts/generate_image.py "prompt" "output.jpg"
+python3 $SKILL_DIR/scripts/generate_with_preset.py "prompt" "output.jpg"
 ```
 
 ## Configuration
@@ -33,7 +33,7 @@ Get a free key: https://aistudio.google.com/
 | `2K` | 2048x2048 |
 
 ```bash
-python3 scripts/generate_image.py --size 2K "prompt" "output.jpg"
+python3 $SKILL_DIR/scripts/generate_with_preset.py --size 2K "prompt" "output.jpg"
 ```
 
 ## License

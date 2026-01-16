@@ -53,14 +53,17 @@ echo 'export GEMINI_API_KEY="your-api-key-here"' >> ~/.zshrc
 ### Python Script (Cross-Platform)
 
 ```bash
-python scripts/generate_image.py <prompt> [output_path] [--size SIZE]
+python3 $SKILL_DIR/scripts/generate_with_preset.py [options] <prompt> [output_path]
 ```
 
 | Parameter | Required | Default | Description |
 |-----------|----------|---------|-------------|
 | `prompt` | Yes | - | Text description of desired image |
 | `output_path` | No | `./generated-image.jpg` | Where to save the image |
+| `--preset, -p` | No | - | Preset name(s), comma-separated |
+| `--input, -i` | No | - | Input image(s) for image-to-image |
 | `--size` | No | `1K` | Image size (512, 1K, or 2K) |
+| `--remove-bg` | No | - | Remove background (requires rembg) |
 
 ### Environment Variables
 
@@ -74,25 +77,37 @@ python scripts/generate_image.py <prompt> [output_path] [--size SIZE]
 ### Basic Generation
 
 ```bash
-python scripts/generate_image.py "A serene mountain landscape at dawn"
+python3 $SKILL_DIR/scripts/generate_with_preset.py "A serene mountain landscape at dawn"
+```
+
+### With Preset
+
+```bash
+python3 $SKILL_DIR/scripts/generate_with_preset.py --preset mockup "Login screen" "./login.jpg"
 ```
 
 ### Custom Output Path
 
 ```bash
-python scripts/generate_image.py "Minimalist logo design" "./assets/logo.jpg"
+python3 $SKILL_DIR/scripts/generate_with_preset.py "Minimalist logo design" "./assets/logo.jpg"
 ```
 
 ### High Resolution
 
 ```bash
-python scripts/generate_image.py --size 2K "Detailed portrait" "./high-res.jpg"
+python3 $SKILL_DIR/scripts/generate_with_preset.py --size 2K "Detailed portrait" "./high-res.jpg"
 ```
 
 ### Small/Fast Generation
 
 ```bash
-python scripts/generate_image.py --size 512 "Simple icon" "./icon.jpg"
+python3 $SKILL_DIR/scripts/generate_with_preset.py --size 512 "Simple icon" "./icon.jpg"
+```
+
+### Image-to-Image
+
+```bash
+python3 $SKILL_DIR/scripts/generate_with_preset.py --input source.jpg "Extract the logo" logo.png
 ```
 
 ## Prompt Tips
