@@ -1,0 +1,31 @@
+Mobile app mockup generation - Clean UI screenshots.
+
+MANDATORY RULES:
+
+Perspective:
+- Front view ONLY - display the screen straight-on, no angles
+- No 3D perspective, no tilted phones, no isometric views
+
+Focus:
+- Show ONLY the screen content, like a screenshot
+- No hands holding the phone
+- No decorative backgrounds or environments
+- No dramatic shadows or reflections around the device
+- No floating elements outside the screen
+
+Dimensions:
+- Respect smartphone screen proportions (approximately 9:19.5 ratio)
+- Full screen visible, not cropped
+
+Content:
+- Realistic UI elements (buttons, text, icons, images)
+- Appropriate content density for mobile
+- Touch-friendly sizing for interactive elements
+- Clear visual hierarchy
+
+Quality:
+- Crisp, sharp rendering
+- Consistent styling throughout the screen
+- Professional, production-ready appearance
+
+The output should look like a designer's mockup or a screenshot from a real app.

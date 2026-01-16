@@ -99,15 +99,56 @@ def create_output_dir(output_path: Path) -> None:
         output_dir.mkdir(parents=True, exist_ok=True)
 
 
-def build_request_body(prompt: str, image_size: str) -> bytes:
-    """Build the JSON request body for the API."""
+def load_input_image(image_path: Path) -> tuple[str, str]:
+    """Load an image file and return (base64_data, mime_type)."""
+    if not image_path.exists():
+        print(f"Error: Input image not found: {image_path}", file=sys.stderr)
+        sys.exit(1)
+
+    image_bytes = image_path.read_bytes()
+    base64_data = base64.b64encode(image_bytes).decode("utf-8")
+
+    # Detect MIME type from magic bytes
+    ext = detect_image_format(image_bytes)
+    mime_types = {
+        ".jpg": "image/jpeg",
+        ".png": "image/png",
+        ".gif": "image/gif",
+        ".webp": "image/webp",
+    }
+    mime_type = mime_types.get(ext, "image/jpeg")
+
+    return base64_data, mime_type
+
+
+def build_request_body(prompt: str, image_size: str, input_images: list[tuple[str, str]] | None = None) -> bytes:
+    """Build the JSON request body for the API.
+
+    Args:
+        prompt: Text prompt for generation
+        image_size: Output image size (512, 1K, 2K)
+        input_images: Optional list of (base64_data, mime_type) tuples for image-to-image
+    """
+    parts = []
+
+    # Add input images first if provided (image-to-image mode)
+    if input_images:
+        for base64_data, mime_type in input_images:
+            parts.append({
+                "inlineData": {
+                    "mimeType": mime_type,
+                    "data": base64_data
+                }
+            })
+
+    # Add text prompt
+    parts.append({"text": prompt})
+
     request_data = {
         "contents": [
             {
                 "role": "user",
-                "parts": [
-                    {"text": prompt}
-                ]
+                "parts": parts
             }
         ],
         "generationConfig": {
