@@ -262,6 +262,26 @@ python3 $SKILL_DIR/scripts/generate_batch.py --workers 8 jobs.json
 
 Requires `GEMINI_API_KEY` environment variable to be set.
 
+## File Naming Convention
+
+Generated images automatically use unique naming to avoid collisions:
+
+```
+${contextual_name}_${4 letter ID}.ext
+```
+
+**Examples:**
+- `home.jpg` → `home_a3xz.jpg`
+- `profile-screen.png` → `profile-screen_b2wy.png`
+- `logo.svg` → `logo_c4km.svg`
+
+This means:
+- **You never need to manually track sequence numbers** (no more `home-18.jpg` → `home-19.jpg`)
+- **Files never overwrite each other** — each generation gets a unique 4-character ID
+- **The contextual name you provide is preserved** — just with a unique suffix
+
+The 4-letter ID uses lowercase letters and digits (a-z, 0-9), giving 1.6 million combinations per base name.
+
 ## Notes
 
 - The script auto-detects image format via magic bytes and corrects file extensions

@@ -51,6 +51,7 @@ from generate_image import (
     save_image,
     get_file_size,
     load_input_image,
+    apply_unique_naming,
     DEFAULT_MODEL_ID,
     DEFAULT_IMAGE_SIZE,
 )

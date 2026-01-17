@@ -54,6 +54,7 @@ from generate_image import (
     save_image,
     get_file_size,
     load_input_image,
+    apply_unique_naming,
     DEFAULT_MODEL_ID,
     DEFAULT_IMAGE_SIZE,
 )
@@ -328,7 +329,8 @@ Preset search order:
 
     # Remove background if requested
     if args.remove_bg:
-        final_path = remove_background(final_path, output_path)
+        # Use final_path (which has unique ID) as base for PNG output
+        final_path = remove_background(final_path, final_path)
 
     # Convert to SVG if requested
     if args.output_svg:
@@ -343,9 +345,10 @@ Preset search order:
                     svg_palette = preset_name
                     break
 
+        # Use final_path (which has unique ID) as base for SVG output
         svg_path = convert_to_svg(
             input_path=final_path,
-            output_path=output_path.with_suffix(".svg"),
+            output_path=final_path.with_suffix(".svg"),
             colormode=args.svg_mode,
             preset="logo",  # Always use logo preset for cleaner SVG
             palette=svg_palette,

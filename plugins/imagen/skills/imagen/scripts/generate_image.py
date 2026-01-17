@@ -18,6 +18,8 @@ import argparse
 import base64
 import json
 import os
+import random
+import string
 import sys
 import urllib.request
 import urllib.error
@@ -38,6 +40,30 @@ MAGIC_BYTES = {
     b'GIF89a': '.gif',            # GIF89a
     b'RIFF': '.webp',             # WebP (starts with RIFF, then WEBP)
 }
+
+# Unique ID configuration
+UNIQUE_ID_LENGTH = 4
+UNIQUE_ID_CHARS = string.ascii_lowercase + string.digits  # a-z, 0-9
+
+
+def generate_unique_id(length: int = UNIQUE_ID_LENGTH) -> str:
+    """Generate a random unique ID (e.g., 'a3xz')."""
+    return ''.join(random.choices(UNIQUE_ID_CHARS, k=length))
+
+
+def apply_unique_naming(output_path: Path) -> Path:
+    """Apply unique naming convention: ${contextual_name}_${4 letter ID}.ext
+
+    Examples:
+        home.jpg -> home_a3xz.jpg
+        profile-screen.png -> profile-screen_b2wy.png
+        output.jpg -> output_c4km.jpg
+    """
+    stem = output_path.stem
+    suffix = output_path.suffix
+    unique_id = generate_unique_id()
+    new_name = f"{stem}_{unique_id}{suffix}"
+    return output_path.with_name(new_name)
 
 
 def detect_image_format(image_bytes: bytes) -> str:
@@ -215,11 +241,26 @@ def extract_image_data(response: dict) -> str:
         sys.exit(1)
 
 
-def save_image(image_data: str, output_path: Path) -> Path:
-    """Decode, detect format, fix extension, and save the image. Returns final path."""
+def save_image(image_data: str, output_path: Path, apply_unique_id: bool = True) -> Path:
+    """Decode, detect format, apply unique naming, fix extension, and save the image.
+
+    Args:
+        image_data: Base64 encoded image data
+        output_path: Desired output path (e.g., home.jpg)
+        apply_unique_id: If True, applies unique naming (home.jpg -> home_a3xz.jpg)
+
+    Returns:
+        Final path where the image was saved
+    """
     try:
         image_bytes = base64.b64decode(image_data)
         detected_ext = detect_image_format(image_bytes)
+
+        # Apply unique naming convention: ${contextual_name}_${4 letter ID}.ext
+        if apply_unique_id:
+            output_path = apply_unique_naming(output_path)
+
+        # Fix extension to match detected format
         final_path = fix_extension(output_path, detected_ext)
         final_path.write_bytes(image_bytes)
         return final_path
