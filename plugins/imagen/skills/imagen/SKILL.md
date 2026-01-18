@@ -307,6 +307,55 @@ This means:
 
 The 4-letter ID uses lowercase letters and digits (a-z, 0-9), giving 1.6 million combinations per base name.
 
+## Preparing Icons for Production
+
+When converting generated icons/images for production use, follow this process:
+
+### Process: Remove Background → Crop → Resize
+
+```bash
+# Step 1: Remove background (choose one method)
+# Step 2: Trim whitespace and resize to target size
+
+# Full pipeline example (512x512 production icon):
+rembg i input.jpg /tmp/nobg.png && \
+magick /tmp/nobg.png -trim +repage -resize 512x512 -gravity center -background transparent -extent 512x512 output.png
+```
+
+### Choosing Background Removal Method
+
+Two methods are available — try both if the first doesn't work well:
+
+| Method | Command | Best for |
+|--------|---------|----------|
+| **rembg** (ML-based) | `rembg i input.jpg output.png` | Complex backgrounds, checkered patterns, photos, subject detection |
+| **remove_white_bg** (luminosity) | `python3 $SKILL_DIR/scripts/remove_white_bg.py input.jpg output.png` | Pure white backgrounds, preserves sparkles/light effects |
+
+**Trial and error approach:**
+1. Start with `rembg` — it handles most cases including fake "transparent" checkered backgrounds
+2. If rembg removes too much (sparkles, light effects), try `remove_white_bg`
+3. Adjust threshold if needed: `--threshold 240` for off-white backgrounds
+
+### ImageMagick Pipeline Explained
+
+```bash
+magick input.png \
+  -trim +repage \           # Remove transparent borders, reset canvas
+  -resize 512x512 \         # Resize to fit within 512x512 (maintains aspect ratio)
+  -gravity center \         # Center the image
+  -background transparent \ # Keep transparency
+  -extent 512x512 \         # Pad to exactly 512x512
+  output.png
+```
+
+### Common Production Sizes
+
+| Use case | Size |
+|----------|------|
+| Category icons | 512x512 |
+| App icons | 1024x1024 |
+| Thumbnails | 256x256 |
+
 ## Notes
 
 - The script auto-detects image format via magic bytes and corrects file extensions
