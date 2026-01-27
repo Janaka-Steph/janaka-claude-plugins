@@ -73,10 +73,12 @@ python3 $SKILL_DIR/scripts/generate_with_preset.py --list
 ```
 
 Presets are searched in order:
-1. `./presets/` (current project)
-2. `./design/presets/` (current project)
-3. `$IMAGEN_PRESETS_DIR` environment variable
-4. Built-in presets in the skill directory
+1. `./code/docs/presets/` (monorepo structure)
+2. `./docs/presets/` (versioned presets)
+3. `./design/presets/` (design assets)
+4. `./presets/` (project root)
+5. `$IMAGEN_PRESETS_DIR` environment variable
+6. Built-in presets in the skill directory
 
 ## Built-in Presets
 
@@ -360,4 +362,4 @@ magick input.png \
 
 - The script auto-detects image format via magic bytes and corrects file extensions
 - Output directory is created automatically if it doesn't exist
-- For project-specific presets, create a `presets/` or `design/presets/` folder in the project root
+- For project-specific presets, create a `presets/`, `design/presets/`, or `docs/presets/` folder in the project root

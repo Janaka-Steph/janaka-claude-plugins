@@ -7,7 +7,7 @@ Optional background removal with rembg or luminosity-based method.
 
 Presets are text files containing instructions that get prepended to your prompt.
 The tool searches for presets in this order:
-1. ./presets/ or ./design/presets/ (current working directory)
+1. ./code/docs/presets/, ./docs/presets/, ./design/presets/, or ./presets/ (current working directory)
 2. IMAGEN_PRESETS_DIR environment variable
 3. Built-in presets (imagen/presets/)
 
@@ -70,7 +70,7 @@ def get_preset_dirs() -> list[Path]:
     dirs = []
 
     # 1. Current working directory presets (check multiple common locations)
-    for subdir in ["presets", "design/presets"]:
+    for subdir in ["code/docs/presets", "docs/presets", "design/presets", "presets"]:
         cwd_presets = Path.cwd() / subdir
         if cwd_presets.is_dir():
             dirs.append(cwd_presets)
