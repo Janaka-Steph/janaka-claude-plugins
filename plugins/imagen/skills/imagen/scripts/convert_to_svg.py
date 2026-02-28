@@ -16,7 +16,7 @@ Usage:
     python convert_to_svg.py --svg-preset logo input.png output.svg
 
     # Project palette for cleaner output
-    python convert_to_svg.py --svg-palette damemano input.png output.svg
+    python convert_to_svg.py --svg-palette <project_preset> input.png output.svg
 
     # Custom settings for cleaner output
     python convert_to_svg.py --filter-speckle 8 --color-precision 4 input.png output.svg
@@ -100,9 +100,10 @@ def quantize_to_palette(input_path: Path, colors: list[tuple[int, int, int, int]
 
 # Preset color palettes
 PALETTES = {
-    "damemano": [
+    "manito": [
         (42, 157, 143, 255),    # Teal #2A9D8F
         (231, 111, 81, 255),    # Terracotta #E76F51
+        (245, 240, 232, 255),   # Sand beige #F5F0E8
         (255, 255, 255, 255),   # White
     ],
 }
@@ -143,7 +144,7 @@ def convert_to_svg(
         splice_threshold: Angle threshold for splicing paths
         path_precision: Decimal precision for path coordinates
         preset: Optional preset name ("logo" for logo optimization)
-        palette: Optional palette name for color quantization ("damemano", etc.)
+        palette: Optional palette name for color quantization ("<project_preset>", etc.)
 
     Returns:
         Path to the created SVG file
@@ -231,7 +232,7 @@ Examples:
   python convert_to_svg.py --svg-mode binary icon.png icon.svg
 
   # Logo preset with project palette (recommended)
-  python convert_to_svg.py --svg-preset logo --svg-palette damemano logo.png logo.svg
+  python convert_to_svg.py --svg-preset logo --svg-palette <project_preset> logo.png logo.svg
 
   # Cleaner output with fewer colors
   python convert_to_svg.py --color-precision 4 --filter-speckle 8 logo.png logo.svg
@@ -241,7 +242,7 @@ Examples:
 
 Tips:
   - Use --svg-preset logo for cleaner output (~25KB vs ~400KB)
-  - Use --svg-palette to match your project colors
+  - Use --svg-palette to match your project colors (e.g., <project_preset>)
   - Use --svg-mode binary for line art, logos with solid colors
   - Lower color-precision = fewer colors, simpler SVG
   - Higher filter-speckle = removes more small artifacts

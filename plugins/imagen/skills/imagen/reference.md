@@ -81,7 +81,7 @@ python3 $SKILL_DIR/scripts/convert_to_svg.py [options] <input> <output>
 | `output` | Yes | - | Output SVG file path |
 | `--svg-mode, -m` | No | `color` | Color mode: `color` or `binary` for B/W |
 | `--svg-preset` | No | - | SVG preset: `logo` (quantizes colors for cleaner output) |
-| `--svg-palette` | No | - | Color palette for quantization (e.g., `damemano`) |
+| `--svg-palette` | No | - | Color palette for quantization (e.g., `<project_preset>`) |
 | `--filter-speckle` | No | `4` | Speckle filter size (higher = cleaner) |
 | `--color-precision` | No | `6` | Color precision 1-8 (lower = fewer colors) |
 

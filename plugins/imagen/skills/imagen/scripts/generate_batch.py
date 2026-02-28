@@ -5,24 +5,30 @@ generate_batch - Generate multiple images in parallel.
 Uses concurrent.futures to run multiple Gemini API requests simultaneously.
 
 Usage:
-    # Generate from a JSON file with jobs
+    # Generate from a JSON file with jobs (RECOMMENDED for complex jobs)
     python generate_batch.py jobs.json
 
-    # Generate from command line arguments (prompt:output pairs)
-    python generate_batch.py --preset damemano "prompt1" out1.jpg "prompt2" out2.jpg
+    # Generate from command line arguments (simple jobs only)
+    python generate_batch.py --preset <project_preset> "prompt1" --output out1.jpg "prompt2" --output out2.jpg
+
+    # CLI with input images (limited support)
+    python generate_batch.py "screen with logo" --output screen1.jpg --input logo.png "screen with mascot" --output screen2.jpg --input mascot.webp
 
     # Set max parallel workers (default: 4)
     python generate_batch.py --workers 6 jobs.json
 
-JSON format:
+JSON format (RECOMMENDED - supports multiple inputs per job):
     {
-        "preset": "mobile-ui,damemano",
+        "preset": "mobile-ui,<project_preset>",
         "jobs": [
             {"prompt": "home screen", "output": "home.jpg"},
             {"prompt": "profile screen", "output": "profile.jpg", "input": "reference.jpg"},
-            {"prompt": "settings screen", "output": "settings.jpg"}
+            {"prompt": "settings screen", "output": "settings.jpg", "inputs": ["logo.png", "mascot.webp"]}
         ]
     }
+
+CLI format (simple jobs only - limited input support):
+    python generate_batch.py "prompt1" --output out1.jpg "prompt2" --output out2.jpg
 
 Environment variables:
     GEMINI_API_KEY (required) - Your Google Gemini API key
@@ -196,77 +202,141 @@ def run_batch(
 
 
 def parse_cli_jobs(args: list[str]) -> list[dict]:
-    """Parse command line arguments as prompt/output pairs."""
+    """Parse command line arguments as prompt/output pairs with optional inputs."""
     jobs = []
     i = 0
+    current_job = None
+    
     while i < len(args):
-        if i + 1 >= len(args):
-            print(f"Error: Missing output path for prompt: {args[i]}", file=sys.stderr)
+        arg = args[i]
+        
+        if arg == "--input" or arg == "-i":
+            # Add input to current job
+            if not current_job:
+                print("Error: --input must come after a prompt", file=sys.stderr)
+                sys.exit(1)
+            if i + 1 >= len(args):
+                print("Error: Missing input path after --input", file=sys.stderr)
+                sys.exit(1)
+            
+            input_path = args[i + 1]
+            if "inputs" not in current_job:
+                current_job["inputs"] = []
+            current_job["inputs"].append(input_path)
+            i += 2
+        elif arg == "--output" or arg == "-o":
+            # Set output path for current job
+            if not current_job:
+                print("Error: --output must come after a prompt", file=sys.stderr)
+                sys.exit(1)
+            if i + 1 >= len(args):
+                print("Error: Missing output path after --output", file=sys.stderr)
+                sys.exit(1)
+            current_job["output"] = args[i + 1]
+            i += 2
+        else:
+            # New prompt - save previous job if exists
+            if current_job:
+                jobs.append(current_job)
+            
+            # Start new job with prompt
+            current_job = {"prompt": arg}
+            i += 1
+    
+    # Add last job
+    if current_job:
+        jobs.append(current_job)
+    
+    # Validate jobs have outputs
+    for job in jobs:
+        if "output" not in job:
+            print(f"Error: Missing output for prompt: {job['prompt']}", file=sys.stderr)
             sys.exit(1)
-        jobs.append({
-            "prompt": args[i],
-            "output": args[i + 1],
-        })
-        i += 2
+    
     return jobs
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Generate multiple images in parallel",
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-Examples:
-  # From JSON file
-  python generate_batch.py jobs.json
-
-  # From command line (prompt output pairs)
-  python generate_batch.py --preset damemano "home screen" home.jpg "profile" profile.jpg
-
-  # With more workers
-  python generate_batch.py --workers 8 jobs.json
-
-JSON format:
-  {
-    "preset": "mobile-ui,damemano",
-    "jobs": [
-      {"prompt": "screen 1", "output": "out1.jpg"},
-      {"prompt": "screen 2", "output": "out2.jpg", "input": "ref.jpg"}
-    ]
-  }
-        """
-    )
-
-    parser.add_argument("input", nargs="*",
-                        help="JSON file path, or prompt/output pairs")
-    parser.add_argument("--preset", "-p",
-                        help="Preset name(s), comma-separated")
-    parser.add_argument("--workers", "-w", type=int, default=4,
-                        help="Max parallel workers (default: 4)")
-    parser.add_argument("--size", choices=["512", "1K", "2K"],
-                        help="Image size (overrides IMAGE_SIZE env var)")
-    parser.add_argument("--model", "-m",
-                        help=f"Gemini model ID (default: {DEFAULT_MODEL_ID})")
-
-    args = parser.parse_args()
-
-    if not args.input:
-        parser.print_help()
+    # Custom parsing to handle --output and --input flags
+    preset = None
+    workers = 4
+    size = None
+    model = None
+    cli_args = []
+    
+    i = 1
+    while i < len(sys.argv):
+        arg = sys.argv[i]
+        
+        if arg == "--preset" or arg == "-p":
+            if i + 1 >= len(sys.argv):
+                print("Error: Missing preset name", file=sys.stderr)
+                sys.exit(1)
+            preset = sys.argv[i + 1]
+            i += 2
+        elif arg == "--workers" or arg == "-w":
+            if i + 1 >= len(sys.argv):
+                print("Error: Missing workers count", file=sys.stderr)
+                sys.exit(1)
+            try:
+                workers = int(sys.argv[i + 1])
+            except ValueError:
+                print("Error: Workers must be a number", file=sys.stderr)
+                sys.exit(1)
+            i += 2
+        elif arg == "--size":
+            if i + 1 >= len(sys.argv):
+                print("Error: Missing size", file=sys.stderr)
+                sys.exit(1)
+            size = sys.argv[i + 1]
+            i += 2
+        elif arg == "--model" or arg == "-m":
+            if i + 1 >= len(sys.argv):
+                print("Error: Missing model ID", file=sys.stderr)
+                sys.exit(1)
+            model = sys.argv[i + 1]
+            i += 2
+        elif arg.startswith("--"):
+            # Pass through to CLI parser (like --output, --input)
+            cli_args.append(arg)
+            if i + 1 < len(sys.argv) and not sys.argv[i + 1].startswith("--"):
+                cli_args.append(sys.argv[i + 1])
+                i += 2
+            else:
+                i += 1
+        else:
+            cli_args.append(arg)
+            i += 1
+    
+    if not cli_args:
+        print("Generate multiple images in parallel\n")
+        print("Usage:")
+        print("  python generate_batch.py jobs.json")
+        print("  python generate_batch.py \"prompt1\" --output out1.jpg \"prompt2\" --output out2.jpg")
+        print("\nOptions:")
+        print("  --preset PRESET    Preset name(s), comma-separated")
+        print("  --workers N       Max parallel workers (default: 4)")
+        print("  --size SIZE       Image size: 512, 1K, 2K")
+        print("  --model MODEL     Gemini model ID")
+        print("\nExamples:")
+        print("  # JSON (RECOMMENDED)")
+        print("  python generate_batch.py jobs.json")
+        print("\n  # CLI with inputs")
+        print("  python generate_batch.py \"screen with logo\" --output screen1.jpg --input logo.png")
         sys.exit(1)
 
     # Get configuration
     api_key = get_api_key()
-    model_id = args.model or os.environ.get("GEMINI_MODEL", DEFAULT_MODEL_ID)
-    image_size = args.size or os.environ.get("IMAGE_SIZE", DEFAULT_IMAGE_SIZE)
+    model_id = model or os.environ.get("GEMINI_MODEL", DEFAULT_MODEL_ID)
+    image_size = size or os.environ.get("IMAGE_SIZE", DEFAULT_IMAGE_SIZE)
     image_size = validate_image_size(image_size)
 
     # Determine if input is JSON file or CLI pairs
     jobs = []
-    preset = args.preset
 
-    if len(args.input) == 1 and args.input[0].endswith(".json"):
+    if len(cli_args) == 1 and cli_args[0].endswith(".json"):
         # Load from JSON file
-        json_path = Path(args.input[0])
+        json_path = Path(cli_args[0])
         if not json_path.exists():
             print(f"Error: JSON file not found: {json_path}", file=sys.stderr)
             sys.exit(1)
@@ -280,7 +350,7 @@ JSON format:
             preset = data.get("preset")
     else:
         # Parse CLI prompt/output pairs
-        jobs = parse_cli_jobs(args.input)
+        jobs = parse_cli_jobs(cli_args)
 
     if not jobs:
         print("Error: No jobs to process", file=sys.stderr)
@@ -290,7 +360,7 @@ JSON format:
     results = run_batch(
         jobs=jobs,
         preset=preset,
-        max_workers=args.workers,
+        max_workers=workers,
         api_key=api_key,
         model_id=model_id,
         image_size=image_size,

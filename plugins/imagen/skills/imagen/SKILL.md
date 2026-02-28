@@ -53,7 +53,7 @@ python3 $SKILL_DIR/scripts/generate_with_preset.py \
 
 | Option | Description |
 |--------|-------------|
-| `--preset, -p` | Preset name(s), comma-separated (e.g., `mobile-ui,damemano`) |
+| `--preset, -p` | Preset name(s), comma-separated (e.g., `mobile-ui,<project_preset>`) |
 | `--input, -i` | Input image(s) for image-to-image (can use multiple times) |
 | `--size` | Output size: `512`, `1K` (default), or `2K` |
 | `--remove-bg, -r` | Remove background with rembg (ML-based, for complex backgrounds) |
@@ -89,13 +89,13 @@ Presets are searched in order:
 
 ## Combining Presets
 
-Multiple presets can be combined with commas: `--preset mobile-ui,damemano`
+Multiple presets can be combined with commas: `--preset mobile-ui,<project_preset>`
 
 **How it works:** Presets are concatenated in order into the final prompt. The model receives all instructions together.
 
 **Best practice:** Combine presets that address different aspects:
 - `mobile-ui` = format/framing rules (screen ratio, no device frame)
-- `damemano` = style rules (colors, typography, brand feel)
+- `<project_preset>` = style rules (colors, typography, brand feel)
 
 **Conflicts:** If presets contradict each other, the model's behavior is unpredictable - it may follow the last instruction, make a compromise, or ignore some rules. Avoid combining presets with conflicting instructions.
 
@@ -175,7 +175,7 @@ python3 $SKILL_DIR/scripts/remove_white_bg.py --threshold 240 input.jpg output.p
 ```bash
 # Color SVG with project palette (recommended for clean output)
 python3 $SKILL_DIR/scripts/generate_with_preset.py \
-  --preset damemano \
+  --preset <project_preset> \
   --remove-bg --output-svg \
   "minimalist app logo" \
   logo.svg
@@ -192,7 +192,7 @@ python3 $SKILL_DIR/scripts/generate_with_preset.py \
 # Explicit palette override (if different from --preset)
 python3 $SKILL_DIR/scripts/generate_with_preset.py \
   --preset mobile-ui \
-  --svg-palette damemano \
+  --svg-palette <project_preset> \
   --remove-bg --output-svg \
   "logo on transparent background" \
   logo.svg
@@ -210,7 +210,7 @@ python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-mode binary icon.png icon.svg
 python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-preset logo input.png output.svg
 
 # Project-specific palette for best results
-python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-palette damemano logo.png logo.svg
+python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-palette <project_preset> logo.png logo.svg
 ```
 
 **Tip:** For logos with gradients or anti-aliasing, use `--svg-preset logo` or `--svg-palette` to quantize colors first. This produces much cleaner SVGs (typically 25KB vs 400KB+).
@@ -222,6 +222,54 @@ When using `--output-svg`, the tool automatically:
 2. Uses the project palette from `--preset` (if not a built-in like `creative` or `mobile-ui`)
 
 This ensures clean, optimized SVGs on the first generation. Override with `--svg-palette` if needed.
+
+## Brand Consistency with Multiple Inputs
+
+When generating marketing materials (flyers, social posts, ads), use multiple `--input` images to maintain brand consistency:
+
+- **Logo**: Pass the actual logo image so the AI reproduces it instead of generating text
+- **Mascot/Character**: Pass a reference image to preserve character design across generations
+- **Style reference**: Pass an existing design to maintain visual consistency
+
+```bash
+# Flyer with logo + mascot consistency
+python3 $SKILL_DIR/scripts/generate_with_preset.py \
+  --preset <project_preset> \
+  -i logo.png \
+  -i mascot.webp \
+  "A5 portrait flyer for print. Place the PROVIDED logo at the top. Show the mascot character from the reference surrounded by category icons. Bottom: website URL and QR code." \
+  flyer.jpg
+```
+
+**Key prompting tips for multi-input:**
+- Explicitly say "use the PROVIDED logo" or "use the EXACT logo from the input image"
+- Say "reproduce the mascot character from the reference image"
+- The AI may still stylize text — for pixel-perfect logos, composite in post-production
+
+### Batch Flyers with Brand Assets
+
+```json
+{
+  "preset": "<project_preset>",
+  "jobs": [
+    {
+      "prompt": "A5 flyer with logo + mascot + 6 category icons",
+      "output": "flyer-icons.jpg",
+      "inputs": ["logo.png", "mascot.webp"]
+    },
+    {
+      "prompt": "A5 flyer with logo + mascot + community scene vignettes",
+      "output": "flyer-community.jpg",
+      "inputs": ["logo.png", "mascot.webp"]
+    },
+    {
+      "prompt": "A5 flyer with logo + mascot next to a smartphone showing app",
+      "output": "flyer-phone.jpg",
+      "inputs": ["logo.png", "mascot.webp"]
+    }
+  ]
+}
+```
 
 ## Correcting/Fixing UI Screens
 
@@ -243,33 +291,47 @@ python3 $SKILL_DIR/scripts/generate_with_preset.py \
 
 **IMPORTANT:** When generating more than 1 image, ALWAYS use `generate_batch.py`. It runs requests in parallel and is 3-5x faster than sequential calls.
 
-```bash
-# From command line (prompt/output pairs)
-python3 $SKILL_DIR/scripts/generate_batch.py \
-  --preset mobile-ui,damemano \
-  "home screen" home.jpg \
-  "profile screen" profile.jpg \
-  "settings screen" settings.jpg
+**RECOMMENDED:** Use JSON format for complex jobs with multiple input images. CLI format only supports simple jobs.
 
-# From JSON file (better for many images)
-python3 $SKILL_DIR/scripts/generate_batch.py jobs.json
-
-# Control parallelism (default: 4 workers)
-python3 $SKILL_DIR/scripts/generate_batch.py --workers 8 jobs.json
-```
-
-### JSON Batch Format
+### JSON Format (RECOMMENDED - Full Features)
 
 ```json
 {
-  "preset": "mobile-ui,damemano",
+  "preset": "mobile-ui,<project_preset>",
   "jobs": [
     {"prompt": "home screen with search bar", "output": "home.jpg"},
-    {"prompt": "user profile page", "output": "profile.jpg"},
-    {"prompt": "settings menu", "output": "settings.jpg", "input": "reference.jpg"}
+    {"prompt": "user profile page", "output": "profile.jpg", "input": "reference.jpg"},
+    {"prompt": "settings menu", "output": "settings.jpg", "inputs": ["logo.png", "mascot.webp"]}
   ]
 }
 ```
+
+```bash
+python3 $SKILL_DIR/scripts/generate_batch.py jobs.json
+```
+
+### CLI Format (Simple Jobs Only)
+
+```bash
+# Basic jobs (no input images)
+python3 $SKILL_DIR/scripts/generate_batch.py \
+  --preset mobile-ui,<project_preset> \
+  "home screen" --output home.jpg \
+  "profile screen" --output profile.jpg \
+  "settings screen" --output settings.jpg
+
+# Single input per job (limited)
+python3 $SKILL_DIR/scripts/generate_batch.py \
+  "screen with logo" --output screen1.jpg --input logo.png \
+  "screen with mascot" --output screen2.jpg --input mascot.webp
+```
+
+**Why JSON is recommended:**
+- ✅ Multiple input images per job
+- ✅ Complex job configurations
+- ✅ Easier to edit and maintain
+- ✅ Better error handling
+- ✅ Reusable job templates
 
 ### Batch Options
 

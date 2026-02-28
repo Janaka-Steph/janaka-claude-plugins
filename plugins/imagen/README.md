@@ -46,7 +46,7 @@ Generate clean, optimized SVGs in one step:
 
 ```bash
 python3 $SKILL_DIR/scripts/generate_with_preset.py \
-  --preset damemano \
+  --preset <project_preset> \
   --remove-bg \
   --output-svg \
   "logo icon" \

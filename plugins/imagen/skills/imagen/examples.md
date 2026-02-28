@@ -203,14 +203,14 @@ User: "Extract the logo from this screen and make it an SVG"
 
 Claude will run:
 python3 $SKILL_DIR/scripts/generate_with_preset.py \
-  --preset damemano \
+  --preset <project_preset> \
   --input screen.jpg \
   --remove-bg \
   --output-svg \
   "Extract the logo on transparent background" \
   logo.svg
 
-# The --preset damemano automatically sets --svg-palette damemano
+# The --preset <project_preset> automatically sets --svg-palette <project_preset>
 # This produces a clean ~25KB SVG instead of ~400KB
 ```
 
@@ -220,7 +220,7 @@ User: "Generate a simple logo and make it an SVG"
 
 Claude will run:
 python3 $SKILL_DIR/scripts/generate_with_preset.py \
-  --preset damemano \
+  --preset <project_preset> \
   --remove-bg \
   --output-svg \
   "minimalist app logo, flat design, two colors" \
@@ -237,10 +237,10 @@ python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-preset logo ./logo.png ./logo
 
 ### Logo with Project Palette (Standalone)
 ```
-User: "Convert the DameMano logo to a clean SVG"
+User: "Convert the <project_name> logo to a clean SVG"
 
 Claude will run:
-python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-palette damemano ./logo.png ./logo.svg
+python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-palette <project_preset> ./logo.png ./logo.svg
 ```
 
 ### Line Art to Binary SVG
@@ -253,12 +253,12 @@ python3 $SKILL_DIR/scripts/convert_to_svg.py --svg-mode binary ./icon.png ./icon
 
 ### Override Palette (when --preset differs from desired SVG colors)
 ```
-User: "Generate a mobile-ui-style logo but use the damemano colors for SVG"
+User: "Generate a mobile-ui-style logo but use the <project_preset> colors for SVG"
 
 Claude will run:
 python3 $SKILL_DIR/scripts/generate_with_preset.py \
   --preset mobile-ui \
-  --svg-palette damemano \
+  --svg-palette <project_preset> \
   --remove-bg \
   --output-svg \
   "clean app logo" \

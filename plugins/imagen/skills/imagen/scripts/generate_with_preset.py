@@ -14,11 +14,11 @@ The tool searches for presets in this order:
 Usage:
     # Text-to-image
     python generate_with_preset.py --preset creative "your prompt" output.jpg
-    python generate_with_preset.py --preset mobile-ui,damemano "login screen" output.jpg
+    python generate_with_preset.py --preset mobile-ui,<project_preset> "login screen" output.jpg
 
     # Image-to-image (edit/transform existing image)
     python generate_with_preset.py --input photo.jpg "extract the logo" logo.png
-    python generate_with_preset.py --input screen.jpg --preset damemano "refine colors" output.jpg
+    python generate_with_preset.py --input screen.jpg --preset <project_preset> "refine colors" output.jpg
 
     # Multiple reference images
     python generate_with_preset.py -i navbar.png -i menu.png "combine these designs" output.jpg
@@ -208,11 +208,11 @@ Examples:
   python generate_with_preset.py --preset creative "landing page concepts" output.jpg
 
   # Combine presets (mobile-ui rules + project style)
-  python generate_with_preset.py --preset mobile-ui,damemano "search screen" output.jpg
+  python generate_with_preset.py --preset mobile-ui,<project_preset> "search screen" output.jpg
 
   # Image-to-image: extract or transform
   python generate_with_preset.py --input screen.jpg "extract the logo on transparent background" logo.png
-  python generate_with_preset.py --input photo.jpg --preset damemano "apply brand colors" output.jpg
+  python generate_with_preset.py --input photo.jpg --preset <project_preset> "apply brand colors" output.jpg
 
   # Multiple reference images (use -i multiple times)
   python generate_with_preset.py -i navbar.png -i menu.png "profile page using navbar from first image and menu from second" output.jpg
@@ -240,7 +240,7 @@ Preset search order:
     parser.add_argument("--input", "-i", metavar="IMAGE", action="append", dest="inputs",
                         help="Input image(s) for reference (can be used multiple times)")
     parser.add_argument("--preset", "-p",
-                        help="Preset name(s) to use, comma-separated (e.g., 'creative' or 'mobile-ui,damemano')")
+                        help="Preset name(s) to use, comma-separated (e.g., 'creative' or 'mobile-ui,<project_preset>')")
     parser.add_argument("--remove-bg", "-r", action="store_true",
                         help="Remove background with rembg (ML-based, for complex backgrounds)")
     parser.add_argument("--remove-white-bg", "-w", action="store_true",
@@ -250,7 +250,7 @@ Preset search order:
     parser.add_argument("--svg-mode", choices=["color", "binary"], default="color",
                         help="SVG color mode: 'color' (default) or 'binary' for B/W line art")
     parser.add_argument("--svg-palette",
-                        help="SVG color palette for quantization (e.g., 'damemano'). Auto-detected from --preset if not specified.")
+                        help="SVG color palette for quantization (e.g., '<project_preset>'). Auto-detected from --preset if not specified.")
     parser.add_argument("--show-prompt", action="store_true",
                         help="Show the full prompt (preset + user) and exit without generating")
     parser.add_argument("--size", choices=["512", "1K", "2K"],
