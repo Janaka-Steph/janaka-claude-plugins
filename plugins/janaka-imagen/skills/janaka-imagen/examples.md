@@ -1,4 +1,4 @@
-# imagen - Usage Examples
+# janaka-imagen - Usage Examples
 
 ## Frontend Development Scenarios
 

@@ -1,4 +1,4 @@
-# imagen
+# janaka-imagen
 
 Image generation skill using Google Gemini API.
 

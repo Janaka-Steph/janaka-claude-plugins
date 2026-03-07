@@ -1,5 +1,5 @@
 ---
-name: imagen
+name: janaka-imagen
 description: |
   Generate images using Google Gemini Imagen. Supports text-to-image,
   image-to-image transformations, and reusable presets for consistent style.

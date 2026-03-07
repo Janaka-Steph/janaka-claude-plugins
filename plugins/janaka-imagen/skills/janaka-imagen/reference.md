@@ -1,4 +1,4 @@
-# imagen Reference
+# janaka-imagen Reference
 
 ## Setup
 

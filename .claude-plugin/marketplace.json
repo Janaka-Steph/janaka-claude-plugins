@@ -9,8 +9,8 @@
   },
   "plugins": [
     {
-      "name": "imagen",
-      "source": "./plugins/imagen",
+      "name": "janaka-imagen",
+      "source": "./plugins/janaka-imagen",
       "description": "Generate images using Google Gemini's AI image generation model. Create UI mockups, icons, illustrations, diagrams, and more.",
       "author": {
         "name": "Janaka-Steph"
