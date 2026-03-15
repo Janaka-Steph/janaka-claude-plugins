@@ -1,7 +1,7 @@
 {
   "name": "janaka-imagen",
   "description": "Generate images using Google Gemini's AI image generation model. Create mobile UI screens, icons, illustrations, diagrams, and more.",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": {
     "name": "Janaka-Steph"
   },
